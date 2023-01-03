@@ -8,7 +8,7 @@ yum install nodejs -y &>>${LOG_FILE}
 echo status = $?
 
 echo "add application roboshop user"
-# useradd roboshop &>>${LOG_FILE}
+useradd roboshop &>>${LOG_FILE}
 echo status = $?
 
 echo "download catalogue application code"
@@ -21,11 +21,11 @@ echo "extract catalogue application code"
 unzip /tmp/catalogue.zip &>>${LOG_FILE}
 echo status = $?
 
-$ mv catalogue-main catalogue
-$ cd /home/roboshop/catalogue
+mv catalogue-main catalogue
+cd /home/roboshop/catalogue
 
 echo "install nodejs dependencies"
-$ npm install &>>${LOG_FILE}
+npm install &>>${LOG_FILE}
 echo status = $?
 
 echo "setup catalogue service"
