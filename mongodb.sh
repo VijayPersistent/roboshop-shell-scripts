@@ -3,8 +3,12 @@ echo "Setting MongoDB Repo"
 curl -s -o /etc/yum.repos.d/mongodb.repo https://raw.githubusercontent.com/roboshop-devops-project/mongodb/main/mongo.repo &>>$LOG_FILE
 echo Status = $?
 
-echo "Installing MongoDB Service"
+echo "Installing MongoDB Server"
 yum install -y mongodb-org &>>$LOG_FILE
+echo Status = $?
+
+echo "Update mongodb listen address"
+sed -i -e 's/127.0.0.1/0.0.0.0/' /etc/mongod.conf
 echo Status = $?
 
 echo "Starting MongoDB Service"
