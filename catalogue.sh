@@ -34,6 +34,7 @@ useradd roboshop &>>${LOG_FILE}
       exit 1
    fi
 fi
+
 echo "download catalogue application code"
 curl -s -L -o /tmp/catalogue.zip "https://github.com/roboshop-devops-project/catalogue/archive/main.zip" &>>${LOG_FILE}
 if [ $? -eq 0 ]; then
@@ -44,6 +45,15 @@ else
 fi
 
 cd /home/roboshop
+
+echo "clean old app content"
+rm -rf catalogue &>>${LOG_FILE}
+if [ $? -eq 0 ]; then
+  echo Status = SUCCESS
+else
+  echo Status = FAILURE
+  exit 1
+fi
 
 echo "extract catalogue application code"
 unzip /tmp/catalogue.zip &>>${LOG_FILE}
