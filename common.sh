@@ -29,38 +29,38 @@ NODEJS(){
      StatusCheck $?
   fi
 
-  echo "download $(COMPONENT) application code"
-  curl -s -L -o /tmp/user.zip "https://github.com/roboshop-devops-project/$(COMPONENT)/archive/main.zip" &>>${LOG_FILE}
+  echo "download ${COMPONENT} application code"
+  curl -s -L -o /tmp/user.zip "https://github.com/roboshop-devops-project/${COMPONENT}/archive/main.zip" &>>${LOG_FILE}
   StatusCheck $?
 
   cd /home/roboshop
 
   echo "clean old app content"
-  rm -rf $(COMPONENT) &>>${LOG_FILE}
+  rm -rf ${COMPONENT} &>>${LOG_FILE}
   StatusCheck $?
 
   echo "extract $(COMPONENT) application code"
-  unzip /tmp/$(COMPONENT).zip &>>${LOG_FILE}
+  unzip /tmp/${COMPONENT}.zip &>>${LOG_FILE}
   StatusCheck $?
 
-  mv user-main $(COMPONENT)
-  cd /home/roboshop/$(COMPONENT)
+  mv user-main ${COMPONENT}
+  cd /home/roboshop/${COMPONENT}
 
   echo "install nodejs dependencies"
   npm install &>>${LOG_FILE}
   StatusCheck $?
 
 echo "Update Systemd service file"
-sed -i -e 's/REDIS_ENDPOINT/redis.roboshop.internal' -e 's/MONGO_ENDPOINT/mongodb.roboshop.internal' /home/roboshop/$(COMPONENT)/systemd.service
+sed -i -e 's/REDIS_ENDPOINT/redis.roboshop.internal/' -e 's/MONGO_ENDPOINT/mongodb.roboshop.internal/' -e 's/CATALOGUE_ENDPOINT/catalogue.roboshop.internal/' /home/roboshop/${COMPONENT}/systemd.service
 
 echo "setup user service"
-mv /home/roboshop/$(COMPONENT)/systemd.service /etc/systemd/system/$(COMPONENT).service &>>${LOG_FILE}
+mv /home/roboshop/${COMPONENT}/systemd.service /etc/systemd/system/${COMPONENT}.service &>>${LOG_FILE}
 StatusCheck $?
 
 systemctl daemon-reload &>>${LOG_FILE}
-systemctl enable $(COMPONENT) &>>${LOG_FILE}
+systemctl enable ${COMPONENT} &>>${LOG_FILE}
 
 echo "start $(COMPONENT) service"
-systemctl start $(COMPONENT) &>>${LOG_FILE}
+systemctl start ${COMPONENT} &>>${LOG_FILE}
 StatusCheck $?
 }
